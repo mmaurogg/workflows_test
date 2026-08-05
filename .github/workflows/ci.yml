@@ -28,4 +28,7 @@ jobs:
               - name: Analisis estatico
                 run: flutter analyze
 
+              - name: Run tests
+                run: flutter test
+
               - run: echo "Finalizando la integracion continua"
