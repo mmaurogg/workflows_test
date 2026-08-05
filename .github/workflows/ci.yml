@@ -1,0 +1,12 @@
+name: my first integration
+
+on:
+    push:
+
+jobs:
+    hello:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: saludar
+              run: echo "Hola mundo"
