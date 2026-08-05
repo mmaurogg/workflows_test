@@ -20,6 +20,4 @@ jobs:
               - name: Verificacion de la version de flutter
                 run: ./scripts/check_flutter_version.sh
 
-              - run: flutter pub get
-
               - run: echo "Finalizando la integracion continua"
