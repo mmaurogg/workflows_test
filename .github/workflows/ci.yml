@@ -1,4 +1,4 @@
-name: my first integration
+name: My primera integracion
 
 on:
     push:
@@ -16,3 +16,5 @@ jobs:
                 with:
                     channel: stable
                     flutter-version: 3.35.0
+
+              - run: flutter pub get
