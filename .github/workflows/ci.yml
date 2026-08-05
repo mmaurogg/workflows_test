@@ -22,7 +22,7 @@ jobs:
 
               - run: flutter pub get
 
-              - name: Verificacion de formtato dart 
+              - name: Verificacion de calidad de codigo
                 run: dart format --output=none --set-exit-if-changed .
 
               - name: Analisis estatico
