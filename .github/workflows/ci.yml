@@ -8,5 +8,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: saludar
-              run: echo "Hola mundo"
+              - name: Clone repository
+                uses: actions/checkout@v6
+
+              - name: Set up Flutter
+                uses: subosito/flutter-action@v2
+                with:
+                    channel: stable
+                    flutter-version: 3.35.0
