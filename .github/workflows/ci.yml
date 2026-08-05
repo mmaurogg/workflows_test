@@ -17,4 +17,9 @@ jobs:
                     channel: stable
                     flutter-version: 3.35.0
 
+              - name: Verificacion de la version de flutter
+                run: ./scripts/check_flutter_version.sh
+
               - run: flutter pub get
+
+              - run: echo "Finalizando la integracion continua"

@@ -1,0 +1,7 @@
+EXPECTED_VERSION="3.38.1"
+
+INSTALLED_VERSION=$(flutter --version | head -n 1)
+
+echo "$INSTALLED_VERSION"
+
+echo "$INSTALLED_VERSION" | grep "$EXPECTED_VERSION"
