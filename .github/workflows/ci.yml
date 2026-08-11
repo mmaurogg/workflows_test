@@ -67,7 +67,31 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v7
         with:
-          name: app-release
+          name: android-device-validation-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+  device_validation:
+    needs: build_android
+    runs-on: [self-hosted, test-android]
+
+    environment:
+      name: physical-device
+
+    steps:
+      - name: Download APK
+        uses: actions/download-artifact@v8
+        with:
+          name: android-device-validation-apk
+          path: ./artifacts
+
+      - name: List artifact
+        run: |
+          find ./artifacts -type f
+
+      - name: Check Android device
+        run: adb devices
+
+      
+
 
 
