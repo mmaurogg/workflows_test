@@ -72,7 +72,7 @@ jobs:
 
   device_validation:
     needs: build_android
-    runs-on: test-android
+    runs-on: [self-hosted, macos, test-android]
 
     environment:
       name: physical-device
