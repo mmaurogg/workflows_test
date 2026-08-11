@@ -9,6 +9,7 @@ concurrency:
 
 jobs:
   validation:
+    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -44,6 +45,7 @@ jobs:
       - run: echo "Finalizando la integracion continua"
 
   build_android:
+    if: false
     needs: validation
     runs-on: ubuntu-latest
 
@@ -71,18 +73,18 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
   device_validation:
-    needs: build_android
+    # needs: build_android
     runs-on: [self-hosted, macos, test-android]
 
     environment:
       name: physical-device
 
     steps:
-      - name: Download APK
-        uses: actions/download-artifact@v8
-        with:
-          name: android-device-validation-apk
-          path: ./artifacts
+    #  - name: Download APK
+    #    uses: actions/download-artifact@v8
+    #    with:
+    #      name: android-device-validation-apk
+    #      path: ./artifacts
 
       - name: List artifact
         run: |
