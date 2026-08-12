@@ -3,6 +3,8 @@ name: My primera integracion
 on:
   push:
 
+  workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -85,6 +87,7 @@ jobs:
     #    with:
     #      name: android-device-validation-apk
     #      path: ./artifacts
+      - run: echo "prueba runner"
 
       - name: List artifact
         run: |
