@@ -1,0 +1,17 @@
+name: My primera integracion
+
+on:
+  push:
+
+  workflow_dispatch:
+
+
+jobs:
+  self-hosted:
+    runs-on: [self-hosted, macos, test-android]
+
+    environment:
+      name: physical-device
+
+    steps:
+      - run: echo "prueba runner"
