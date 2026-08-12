@@ -120,7 +120,7 @@ jobs:
         run: adb install -r ./artifacts/app-release.apk
 
       - name: Run integration tests
-        run: flutter test integration_test
+        run: flutter test integration_test -d ZT322KXXVM
 
 
 
