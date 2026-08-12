@@ -11,7 +11,6 @@ concurrency:
 
 jobs:
   validation:
-    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -47,7 +46,6 @@ jobs:
       - run: echo "Finalizando la integracion continua"
 
   build_android:
-    if: false
     needs: validation
     runs-on: ubuntu-latest
 
@@ -75,14 +73,27 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
   device_validation:
-    if: true
-    # needs: build_android
+    needs: build_android
     runs-on: [self-hosted, macos]
 
     environment:
       name: physical-device
 
     steps:
+      - name: Restore cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: Setup dependencies
+        run: flutter pub get
+
+      - name: Download APK
+        uses: actions/download-artifact@v8
+        with:
+         name: android-device-validation-apk
+         path: ./artifacts
 
       - name: List artifact
         run: |
@@ -91,7 +102,11 @@ jobs:
       - name: Check Android device
         run: adb devices
 
-      
+      - name: Install APK
+        run: adb install -r ./artifacts/app-release.apk
+
+      - name: Run integration tests
+        run: flutter test integration_test
 
 
 
