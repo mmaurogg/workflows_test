@@ -75,20 +75,14 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
   device_validation:
-    if: false
-    needs: build_android
-    runs-on: [self-hosted, macos, test-android]
+    if: true
+    # needs: build_android
+    runs-on: [self-hosted, macos]
 
     environment:
       name: physical-device
 
     steps:
-      - name: Download APK
-        uses: actions/download-artifact@v8
-        with:
-         name: android-device-validation-apk
-         path: ./artifacts
-      - run: echo "prueba runner"
 
       - name: List artifact
         run: |
