@@ -116,8 +116,11 @@ jobs:
       - name: Check Android device
         run: adb devices
 
+      - name: Uninstall existing app
+        run: adb uninstall com.example.ci_app || true
+
       - name: Install APK
-        run: adb install -r ./artifacts/app-release.apk
+        run: adb install ./artifacts/app-release.apk
 
       - name: Run integration tests
         run: flutter test integration_test -d ZT322KXXVM
