@@ -3,6 +3,8 @@ name: My primera integracion
 on:
   push:
 
+  workflow_dispatch:
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -60,6 +62,12 @@ jobs:
       - name: Verificacion de la version de flutter
         run: bash ./scripts/check_flutter_version.sh
 
+      - name: Restore cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+
       - run: flutter pub get
 
       - run: flutter build apk
@@ -67,7 +75,55 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v7
         with:
-          name: app-release
+          name: android-device-validation-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+  device_validation:
+    needs: build_android
+    runs-on: [self-hosted, macos]
+
+    environment:
+      name: physical-device
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.35.0
+
+      - name: Restore cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+
+      - run: flutter pub get
+
+      - name: Download APK
+        uses: actions/download-artifact@v8
+        with:
+         name: android-device-validation-apk
+         path: ./artifacts
+
+      - name: List artifact
+        run: |
+          find ./artifacts -type f
+
+      - name: Check Android device
+        run: adb devices
+
+      - name: Uninstall existing app
+        run: adb uninstall com.example.ci_app || true
+
+      - name: Install APK
+        run: adb install ./artifacts/app-release.apk
+
+      - name: Run integration tests
+        run: flutter test integration_test -d ZT322KXXVM
+
 
 
